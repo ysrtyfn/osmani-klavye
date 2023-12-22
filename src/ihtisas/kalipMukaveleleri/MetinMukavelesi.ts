@@ -3,8 +3,10 @@ import { Metin } from "../nevler/Metin";
 
 export interface MetinMukavelesi {
   ekleHarf(harf: Harf): Metin;
-  ekleHarfiMevkiye(harf: Harf, mevkiBaşı: number): Metin;
+  ekleHarfiMevkiye(harf: Harf, mevkiBaşı: number): [Metin, number];
+  ekleHarfiAraya(harf: Harf, mevkiBaşı: number, mevkiSonu: number): [Metin, number];
 
+  alMetni(): Metin;
   alSondakiHarfi(): string;
 
   silHarf(): Metin;

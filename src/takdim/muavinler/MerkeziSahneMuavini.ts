@@ -1,75 +1,65 @@
-import { useState } from "react";
-
-import { Metin, alBoşMetni } from "@/ihtisas/nevler/Metin";
 import { MetinMukavelesi } from "@/ihtisas/kalipMukaveleleri/MetinMukavelesi";
 import { MetniKopyalaVazifesi, MetniTertipleVazifesi } from "@/ihtisas/vazifeler";
 import { Harf } from "@/ihtisas/nevler/Harf";
 import { latinidenOsmaniye } from "@/nuve/latinidenOsmaniye";
-
-let ctrlBasiliMi = false;
-let shiftBasiliMi = false;
-let altBasiliMi = false;
-
-export type MerkeziSahneMuaviniMukavelesi = {
-  metin: Metin;
-  metneHarfEkle: (harf: Harf) => void;
-  metniSil: () => void;
-  metniDeğiştir: (yeniMetin: Metin) => void;
-  metniKopyala: () => void;
-  metniTertiple: () => void;
-  tuşaBasılınca: (hadise: KeyboardEvent) => void;
-  tuşBırakılınca: (hadise: KeyboardEvent) => void;
-};
+import { Metin } from "@/ihtisas/nevler/Metin";
+import { MerkeziSahneMuaviniMukavelesi } from "./MerkeziSahneMuaviniMukavelesi";
 
 export function MerkeziSahneMuavini(metinMukavelesi: MetinMukavelesi): MerkeziSahneMuaviniMukavelesi {
-  const [metin, metniDeğiştir] = useState<Metin>(alBoşMetni());
-
-  const metneHarfEkle = (harf: Harf) => {
-    const harfEklenmişMetin = metinMukavelesi.ekleHarf(harf);
-    metniDeğiştir(harfEklenmişMetin);
+  const metneHarfEkle = (harf: Harf, seçiliKısımBaşı: number, seçiliKısımSonu: number): [Metin, number] => {
+    let harfEklenmişMetin = metinMukavelesi.alMetni();
+    let karetHareketMiktarı = 1;
+    if (metinMukavelesi.alMetni().length === 0) {
+      harfEklenmişMetin = metinMukavelesi.ekleHarf(harf);
+    } else if (seçiliKısımBaşı !== seçiliKısımSonu) {
+      [harfEklenmişMetin, karetHareketMiktarı] = metinMukavelesi.ekleHarfiAraya(harf, seçiliKısımBaşı, seçiliKısımSonu);
+    } else {
+      [harfEklenmişMetin, karetHareketMiktarı] = metinMukavelesi.ekleHarfiMevkiye(harf, seçiliKısımBaşı);
+    }
+    return [harfEklenmişMetin, karetHareketMiktarı];
   };
 
-  const metniSil = () => {
+  const metniSil = (): Metin => {
     const silinmişMetin = metinMukavelesi.silMetni();
-    metniDeğiştir(silinmişMetin);
+    return silinmişMetin;
   };
 
-  const metniKopyala = () => {
-    MetniKopyalaVazifesi(metin);
+  const metniKopyala = (): Metin => {
+    const kopyalanmışMetin = MetniKopyalaVazifesi(metinMukavelesi.alMetni());
+    return kopyalanmışMetin;
   };
 
-  const metniTertiple = () => {
-    const tertipliMetin = MetniTertipleVazifesi(metin);
-    metniDeğiştir(tertipliMetin);
+  const metniTertiple = (): Metin => {
+    const tertipliMetin = MetniTertipleVazifesi(metinMukavelesi.alMetni());
+    return tertipliMetin;
   };
 
-  const tuşaBasılınca = (hadise: KeyboardEvent) => {
+  const tuşaBasılınca = (hadise: KeyboardEvent, seçiliKısımBaşı: number, seçiliKısımSonu: number): [Metin, number] => {
+    hadise.preventDefault(); // metinSahasının onChange metoduna mani oluyor. Tekrar çizme olmadığı için karet mevkisi değişmiyor.
+
     var tuşİsmi = hadise.key;
     // var code = hadise.code;
 
-    if (tuşİsmi === "Space" || tuşİsmi === " ") {
-      hadise.preventDefault();
-    } else if (ctrlBasiliMi && tuşİsmi.toLocaleLowerCase() === "r") {
-      hadise.preventDefault();
-    } else if (ctrlBasiliMi && tuşİsmi.toLocaleLowerCase() === "a") {
-      hadise.preventDefault();
-    }
-
+    let mevcutMetin = metinMukavelesi.alMetni();
+    let karetHareketMiktarı = 0;
     if (tuşİsmi === "Backspace") {
-      const harfSilinmişMetin = metinMukavelesi.silHarf();
-      metniDeğiştir(harfSilinmişMetin);
+      const harfSilinmişMetin = metinMukavelesi.silHarfiMevkiden(seçiliKısımBaşı, seçiliKısımSonu);
+      return [harfSilinmişMetin, -1];
     } else if (tuşİsmi === "Delete") {
-      metniSil();
-    } else if (tuşİsmi === "Control") {
-      ctrlBasiliMi = true;
-    } else if (tuşİsmi === "Shift") {
-      shiftBasiliMi = true;
-    } else if (tuşİsmi === "Alt") {
-      altBasiliMi = true;
+      const harfAdedi = mevcutMetin.length;
+      const silinmişMetin = metniSil();
+      return [silinmişMetin, -harfAdedi];
+    } else if (tuşİsmi === "ArrowRight") {
+      return [mevcutMetin, -1];
+    } else if (tuşİsmi === "ArrowLeft") {
+      return [mevcutMetin, 1];
     } else {
-      let öncekiHarf = metinMukavelesi.alSondakiHarfi();
-      let harf = latinidenOsmaniye(tuşİsmi, öncekiHarf, ctrlBasiliMi, shiftBasiliMi, altBasiliMi);
-      metneHarfEkle({ osmani: harf, latini: tuşİsmi });
+      const öncekiHarf = metinMukavelesi.alSondakiHarfi();
+      const harfOsmani = latinidenOsmaniye(tuşİsmi, öncekiHarf, hadise.ctrlKey, hadise.shiftKey, hadise.altKey);
+      if (harfOsmani.length === 0) {
+        return [mevcutMetin, 0];
+      }
+      return metneHarfEkle({ osmani: harfOsmani, latini: tuşİsmi }, seçiliKısımBaşı, seçiliKısımSonu);
     }
   };
 
@@ -78,24 +68,19 @@ export function MerkeziSahneMuavini(metinMukavelesi: MetinMukavelesi): MerkeziSa
 
     var tuşİsmi = hadise.key;
     // var code = event.code;
+  };
 
-    if (tuşİsmi === "Control") {
-      ctrlBasiliMi = false;
-    } else if (tuşİsmi === "Shift") {
-      shiftBasiliMi = false;
-    } else if (tuşİsmi === "Alt") {
-      altBasiliMi = false;
-    }
+  const tuşTıklanınca = (harf: Harf, seçiliKısımBaşı: number, seçiliKısımSonu: number) => {
+    return metneHarfEkle(harf, seçiliKısımBaşı, seçiliKısımSonu);
   };
 
   return {
-    metin,
-    metneHarfEkle,
+    // metneHarfEkle,
     metniSil,
-    metniDeğiştir,
     metniKopyala,
     metniTertiple,
     tuşaBasılınca,
     tuşBırakılınca,
+    tuşTıklanınca,
   };
 }

@@ -1,7 +1,5 @@
-export type Metin = {
-  muhteva: string;
-};
+export type Metin = string;
 
 export function alBoşMetni(): Metin {
-  return { muhteva: "" };
+  return "";
 }

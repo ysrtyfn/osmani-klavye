@@ -3,13 +3,24 @@ import { Harf } from "@/ihtisas/nevler/Harf";
 import { Metin, alBoşMetni } from "@/ihtisas/nevler/Metin";
 
 export class MetinTatbikati implements MetinMukavelesi {
-  metin: Metin = alBoşMetni();
+  metin: Metin = alBoşMetni(); // metnin hakiki manada tek kaynağı burasıs
 
-  alSondakiHarfi(): string {
-    if (this.metin.muhteva.length > 1) {
-      return this.metin.muhteva.slice(-1);
-    } else if (this.metin.muhteva.length === 1) {
-      return this.metin.muhteva[0];
+  alMetni(): Metin {
+    return this.metin;
+  }
+
+  alSondakiHarfi(metin?: Metin): string {
+    let harfAlınacakMetin = "";
+    if (metin !== undefined) {
+      harfAlınacakMetin = metin;
+    } else {
+      harfAlınacakMetin = this.metin;
+    }
+
+    if (harfAlınacakMetin.length > 1) {
+      return harfAlınacakMetin.slice(-1);
+    } else if (harfAlınacakMetin.length === 1) {
+      return harfAlınacakMetin[0];
     }
     return "";
   }
@@ -18,57 +29,81 @@ export class MetinTatbikati implements MetinMukavelesi {
     let öncekiHarf = this.alSondakiHarfi();
     let harfiOsmani = harf.osmani;
 
-    this.metin = { ...this.metin };
-
     if (öncekiHarf === "ا" && harfiOsmani === "ا") {
-      this.metin.muhteva = this.metin.muhteva.slice(0, -1);
+      this.metin = this.metin.slice(0, -1);
       harfiOsmani = "آ";
     }
     // else if (harfiOsmani !== "" && harfiOsmani !== "-") {
     //   console.log("Bu harfi eklenmeli: " + harf);
     // }
 
-    this.metin.muhteva += harfiOsmani;
+    this.metin += harfiOsmani;
     return this.metin;
   }
 
-  ekleHarfiMevkiye(harf: Harf, mevkiBaşı: number): Metin {
-    this.metin = { ...this.metin };
-    this.metin.muhteva = [
-      this.metin.muhteva.slice(0, mevkiBaşı),
-      harf.osmani,
-      this.metin.muhteva.slice(mevkiBaşı),
-    ].join("");
-    return this.metin;
+  ekleHarfiMevkiye(harf: Harf, mevkiBaşı: number): [Metin, number] {
+    let metinİlkKısım = this.metin.slice(0, mevkiBaşı);
+    const metinSonKısım = this.metin.slice(mevkiBaşı);
+    let karetHareketMiktarı = harf.osmani.length;
+
+    let öncekiHarf = this.alSondakiHarfi(metinİlkKısım);
+    let harfiOsmani = harf.osmani;
+
+    if (öncekiHarf === "ا" && harfiOsmani === "ا") {
+      metinİlkKısım = metinİlkKısım.slice(0, -1);
+      harfiOsmani = "آ";
+      karetHareketMiktarı = 0;
+    }
+
+    this.metin = [metinİlkKısım, harfiOsmani, metinSonKısım].join("");
+    return [this.metin, karetHareketMiktarı];
+  }
+
+  ekleHarfiAraya(harf: Harf, mevkiBaşı: number, mevkiSonu: number): [Metin, number] {
+    let metinİlkKısım = this.metin.slice(0, mevkiBaşı);
+    const metinSonKısım = this.metin.slice(mevkiSonu);
+    let karetHareketMiktarı = harf.osmani.length;
+
+    let öncekiHarf = this.alSondakiHarfi(metinİlkKısım);
+    let harfiOsmani = harf.osmani;
+
+    if (öncekiHarf === "ا" && harfiOsmani === "ا") {
+      metinİlkKısım = metinİlkKısım.slice(0, -1);
+      harfiOsmani = "آ";
+      karetHareketMiktarı = 0;
+    }
+
+    this.metin = [metinİlkKısım, harfiOsmani, metinSonKısım].join("");
+    return [this.metin, karetHareketMiktarı];
   }
 
   silHarf(): Metin {
-    this.metin = { ...this.metin };
-    if (this.metin.muhteva.endsWith("\u200C")) {
-      this.metin.muhteva = this.metin.muhteva.slice(0, -2);
+    if (this.metin.endsWith("\u200C")) {
+      this.metin = this.metin.slice(0, -2);
     } else {
-      this.metin.muhteva = this.metin.muhteva.slice(0, -1);
+      this.metin = this.metin.slice(0, -1);
     }
     return this.metin;
   }
 
   silHarfiMevkiden(mevkiBaşı: number, mevkiSonu: number): Metin {
-    console.log(
-      "🚀 ~ file: MetinTatbikati.ts:39 ~ MetinTatbikati ~ silHarfiMevkiden ~ silHarfiMevkiden:",
-      "hazır değil",
-    );
+    if (mevkiBaşı === mevkiSonu) {
+      mevkiBaşı = mevkiBaşı - 1;
+    }
+    let metinİlkKısım = this.metin.slice(0, mevkiBaşı);
+    const metinSonKısım = this.metin.slice(mevkiSonu);
+
+    this.metin = [metinİlkKısım, metinSonKısım].join("");
     return this.metin;
   }
 
   silMetni(): Metin {
-    this.metin = { ...this.metin };
-    this.metin.muhteva = "";
+    this.metin = "";
     return this.metin;
   }
 
   değiştirMetni(yeniMetin: string): Metin {
-    this.metin = { ...this.metin };
-    this.metin.muhteva = yeniMetin;
+    this.metin = yeniMetin;
     return this.metin;
   }
 }

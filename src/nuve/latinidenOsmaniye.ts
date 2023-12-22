@@ -1,3 +1,5 @@
+import { kelimeBaşıMı } from "./aletler";
+
 export function latinidenOsmaniye(
   latiniHarf: string,
   öncekiHarf: string,
@@ -66,7 +68,7 @@ export function latinidenOsmaniye(
     case "A":
       if (shiftBasiliMi) {
         return "ع";
-      } else if (ctrlBasiliMi) {
+      } else if (altBasiliMi) {
         return "أ";
       }
       return "ا";
@@ -120,7 +122,7 @@ export function latinidenOsmaniye(
 
     case "ı":
     case "I":
-      if (öncekiHarf === " " || öncekiHarf === "" || öncekiHarf === "(") {
+      if (kelimeBaşıMı(öncekiHarf)) {
         return "اي";
       }
       return "ي";
@@ -128,7 +130,7 @@ export function latinidenOsmaniye(
 
     case "i":
     case "İ":
-      if (öncekiHarf === " " || öncekiHarf === "" || öncekiHarf === "(") {
+      if (kelimeBaşıMı(öncekiHarf)) {
         return "اي";
       }
       return "ي";
@@ -163,14 +165,14 @@ export function latinidenOsmaniye(
 
     case "o":
     case "O":
-      if (öncekiHarf === " " || öncekiHarf === "" || öncekiHarf === "(") {
+      if (kelimeBaşıMı(öncekiHarf)) {
         return "اۏ";
       }
       return "ۏ";
 
     case "ö":
     case "Ö":
-      if (öncekiHarf === " " || öncekiHarf === "" || öncekiHarf === "(") {
+      if (kelimeBaşıMı(öncekiHarf)) {
         return "اۊ";
       }
       return "ۊ";
@@ -205,14 +207,14 @@ export function latinidenOsmaniye(
 
     case "u":
     case "U":
-      if (öncekiHarf === " " || öncekiHarf === "" || öncekiHarf === "(") {
+      if (kelimeBaşıMı(öncekiHarf)) {
         return "اۆ";
       }
       return "ۆ";
 
     case "ü":
     case "Ü":
-      if (öncekiHarf === " " || öncekiHarf === "" || öncekiHarf === "(") {
+      if (kelimeBaşıMı(öncekiHarf)) {
         return "اۉ";
       }
       return "ۉ";

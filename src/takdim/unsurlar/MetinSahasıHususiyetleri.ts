@@ -1,8 +1,12 @@
 import { Metin } from "@/ihtisas/nevler/Metin";
+import { Dispatch, SetStateAction } from "react";
 
 type MetinSahasıHususiyetleri = {
   metin: Metin;
-  metinDeğişince: (yeniMetin: Metin) => void;
+  karetMevkisi: number;
+  metniDeğiştir: Dispatch<SetStateAction<string>>;
+  tuşaBasılınca: (hadise: KeyboardEvent, seçiliKısımBaşı: number, seçiliKısımSonu: number) => [Metin, number];
+  tuşBırakılınca: (hadise: KeyboardEvent) => void;
 };
 
 export default MetinSahasıHususiyetleri;
