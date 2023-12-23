@@ -1,9 +1,10 @@
 import { ForwardedRef, RefObject, forwardRef, useEffect, useId, useRef, useState } from "react";
 import MetinSahasıHususiyetleri from "./MetinSahasıHususiyetleri";
+import { cn } from "@/nuve/aletler";
 
 const MetinSahası = forwardRef(
   (
-    { metin, karetMevkisi, metniDeğiştir, tuşaBasılınca, tuşBırakılınca }: MetinSahasıHususiyetleri,
+    { metin, karetMevkisi, metniDeğiştir, tuşaBasılınca, tuşBırakılınca, className }: MetinSahasıHususiyetleri,
     metinSahasıİması: ForwardedRef<HTMLTextAreaElement>,
   ) => {
     const [karetİbresi, değiştirKaretİbresini] = useState<number>(0); // mevki değişmediğinde metnin sonuna gidiyor, yeniden çizmeli
@@ -17,6 +18,7 @@ const MetinSahası = forwardRef(
         const seçiliKısımSonu = metinSahası.selectionEnd;
 
         const [harfEklenmişMetin, karetHareketMiktarı] = tuşaBasılınca(hadise, seçiliKısımBaşı, seçiliKısımSonu);
+        console.log("🚀 ~ file: MetinSahası.tsx:21 ~ useEffect ~ karetHareketMiktarı:", karetHareketMiktarı);
         karetMevkisiİması.current = seçiliKısımBaşı + karetHareketMiktarı;
         değiştirKaretİbresini((ibre) => ibre + 1);
         metniDeğiştir(harfEklenmişMetin);
@@ -31,7 +33,7 @@ const MetinSahası = forwardRef(
         metinSahası.removeEventListener("keydown", tuşaBasılıncaÜst);
         metinSahası.removeEventListener("keyup", tuşBırakılınca);
       };
-    }, []);
+    }, [id_osmaniMetinSahası, metniDeğiştir, tuşBırakılınca, tuşaBasılınca]);
 
     useEffect(() => {
       const metinSahası: HTMLTextAreaElement = document.getElementById(id_osmaniMetinSahası) as HTMLTextAreaElement;
@@ -41,19 +43,18 @@ const MetinSahası = forwardRef(
       }
       metinSahası.focus();
       metinSahası.setSelectionRange(karetMevkisiİması.current, karetMevkisiİması.current);
-    }, [metin, karetİbresi, karetMevkisi]);
+    }, [id_osmaniMetinSahası, metin, karetİbresi, karetMevkisi]);
 
     return (
-      <div className="flex grow flex-col">
-        <label htmlFor={id_osmaniMetinSahası} className="mb-1 pl-2 text-xl font-bold">
+      <div className={cn(className, "flex grow flex-col")}>
+        <label htmlFor={id_osmaniMetinSahası} className="mb-1 hidden pl-2 text-xl font-bold">
           Osmani Metin:
         </label>
         <textarea
           id={id_osmaniMetinSahası}
           ref={metinSahasıİması}
-          className="rounded-md p-2 font-amiri text-4xl font-normal leading-relaxed"
+          className="h-full w-full resize-none rounded p-4 font-amiri text-3xl font-normal leading-relaxed focus:border-0 focus:outline-0"
           name="metin"
-          rows={2}
           dir="rtl"
           disabled={false}
           readOnly={false}
@@ -68,4 +69,5 @@ const MetinSahası = forwardRef(
   },
 );
 
+MetinSahası.displayName = "MetinSahası";
 export default MetinSahası;

@@ -10,7 +10,7 @@ export function MerkeziSahneMuavini(metinMukavelesi: MetinMukavelesi): MerkeziSa
     let harfEklenmişMetin = metinMukavelesi.alMetni();
     let karetHareketMiktarı = 1;
     if (metinMukavelesi.alMetni().length === 0) {
-      harfEklenmişMetin = metinMukavelesi.ekleHarf(harf);
+      [harfEklenmişMetin, karetHareketMiktarı] = metinMukavelesi.ekleHarf(harf);
     } else if (seçiliKısımBaşı !== seçiliKısımSonu) {
       [harfEklenmişMetin, karetHareketMiktarı] = metinMukavelesi.ekleHarfiAraya(harf, seçiliKısımBaşı, seçiliKısımSonu);
     } else {

@@ -1,3 +1,3 @@
 # Osmani Klavye
 
-Osmanlı Türkçesi ile yazmak için hazırlanmıştır. Yeni işaretler techiz edilmiştir.
+Osmanlı Türkçesi ile yazmak için hazırlanmıştır. Yeni işaretlerle techiz edilmiştir.

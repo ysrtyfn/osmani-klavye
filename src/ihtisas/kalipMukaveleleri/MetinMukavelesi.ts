@@ -2,7 +2,7 @@ import { Harf } from "../nevler/Harf";
 import { Metin } from "../nevler/Metin";
 
 export interface MetinMukavelesi {
-  ekleHarf(harf: Harf): Metin;
+  ekleHarf(harf: Harf): [Metin, number];
   ekleHarfiMevkiye(harf: Harf, mevkiBaşı: number): [Metin, number];
   ekleHarfiAraya(harf: Harf, mevkiBaşı: number, mevkiSonu: number): [Metin, number];
 

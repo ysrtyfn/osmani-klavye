@@ -7,6 +7,7 @@ type MetinSahasıHususiyetleri = {
   metniDeğiştir: Dispatch<SetStateAction<string>>;
   tuşaBasılınca: (hadise: KeyboardEvent, seçiliKısımBaşı: number, seçiliKısımSonu: number) => [Metin, number];
   tuşBırakılınca: (hadise: KeyboardEvent) => void;
+  className: string;
 };
 
 export default MetinSahasıHususiyetleri;

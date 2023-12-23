@@ -1,15 +1,13 @@
 import { ClipboardCopy, PencilLine, X } from "lucide-react";
 import { Toaster } from "sonner";
 
-import { harfler, rakamlar, işaretler, noktalama } from "@/merkez/mutalar";
-
 import { MerkeziSahneMuavini } from "@/takdim/muavinler/MerkeziSahneMuavini";
 import MetinSahası from "@/takdim/unsurlar/MetinSahası";
-import HarfTuşu from "@/takdim/unsurlar/HarfTuşu";
 import { MetinTatbikati } from "@/iskele/kalipTatbikatlari/MetinTatbikati";
 import { useEffect, useRef, useState } from "react";
 import { Metin, alBoşMetni } from "@/ihtisas/nevler/Metin";
 import { Harf } from "@/ihtisas/nevler/Harf";
+import HarfTuşlarıKısmı from "../unsurlar/HarfTuşlarıKısmı";
 
 const metinTatbikati = new MetinTatbikati();
 const { metniSil, metniKopyala, metniTertiple, tuşaBasılınca, tuşBırakılınca, tuşTıklanınca } =
@@ -38,8 +36,8 @@ export function MerkeziSahne() {
 
   return (
     <>
-      <main className="mt-12 flex w-full flex-col justify-center gap-8 px-4 xl:max-w-screen-xl">
-        <section className="flex">
+      <main className="my-[5vh] flex w-full flex-col justify-center gap-8 px-4 xl:max-w-screen-xl">
+        <section className="flex w-full justify-center">
           <MetinSahası
             ref={metinSahasıİması}
             metin={metin}
@@ -47,9 +45,10 @@ export function MerkeziSahne() {
             metniDeğiştir={metniDeğiştir}
             tuşaBasılınca={tuşaBasılınca}
             tuşBırakılınca={tuşBırakılınca}
+            className="h-[90vh] max-w-screen-lg rounded-md shadow"
           />
 
-          <section className="flex w-16 select-none flex-col items-center justify-end gap-1 ">
+          <section className="flex w-16 select-none flex-col items-center justify-start gap-1 ">
             <ClipboardCopy
               className="h-10 w-10 rounded bg-white p-1 shadow hover:bg-white/75"
               onClick={() => {
@@ -74,29 +73,7 @@ export function MerkeziSahne() {
           </section>
         </section>
 
-        <section className="flex select-none flex-row-reverse flex-wrap justify-center gap-2 ">
-          {harfler.map((harf, ibre) => {
-            return <HarfTuşu harf={harf} tıklanınca={tuşTıklandığında} key={"harf-tuşu-" + ibre} />;
-          })}
-        </section>
-
-        <section className="flex select-none flex-row-reverse flex-wrap justify-center gap-2 ">
-          {rakamlar.map((rakam, ibre) => {
-            return <HarfTuşu harf={rakam} tıklanınca={tuşTıklandığında} key={"rakam-tuşu-" + ibre} />;
-          })}
-        </section>
-
-        <section className="flex select-none flex-row-reverse flex-wrap justify-center gap-2 ">
-          {noktalama.map((noktalama, ibre) => {
-            return <HarfTuşu harf={noktalama} tıklanınca={tuşTıklandığında} key={"noktalama-tuşu-" + ibre} />;
-          })}
-        </section>
-
-        <section className="flex select-none flex-row-reverse flex-wrap justify-center gap-2 ">
-          {işaretler.map((işaret, ibre) => {
-            return <HarfTuşu harf={işaret} tıklanınca={tuşTıklandığında} key={"işaret-tuşu-" + ibre} />;
-          })}
-        </section>
+        {/* <HarfTuşlarıKısmı tuşTıklanınca={tuşTıklandığında} /> */}
       </main>
 
       <Toaster richColors closeButton position="top-right" />

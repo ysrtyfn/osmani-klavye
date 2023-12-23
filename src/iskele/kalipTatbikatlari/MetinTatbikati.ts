@@ -25,7 +25,7 @@ export class MetinTatbikati implements MetinMukavelesi {
     return "";
   }
 
-  ekleHarf(harf: Harf): Metin {
+  ekleHarf(harf: Harf): [Metin, number] {
     let öncekiHarf = this.alSondakiHarfi();
     let harfiOsmani = harf.osmani;
 
@@ -38,7 +38,7 @@ export class MetinTatbikati implements MetinMukavelesi {
     // }
 
     this.metin += harfiOsmani;
-    return this.metin;
+    return [this.metin, harfiOsmani.length];
   }
 
   ekleHarfiMevkiye(harf: Harf, mevkiBaşı: number): [Metin, number] {
