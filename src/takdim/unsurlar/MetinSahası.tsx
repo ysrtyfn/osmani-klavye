@@ -46,7 +46,7 @@ const MetinSahası = forwardRef(
     }, [id_osmaniMetinSahası, metin, karetİbresi, karetMevkisi]);
 
     return (
-      <div className={cn(className, "flex grow flex-col")}>
+      <section className={cn(className, "flex flex-col justify-center")}>
         <label htmlFor={id_osmaniMetinSahası} className="mb-1 hidden pl-2 text-xl font-bold">
           Osmani Metin:
         </label>
@@ -64,7 +64,7 @@ const MetinSahası = forwardRef(
             console.log("🚀 ~ file: MetinSahası.tsx:65 ~ onChange:", "");
           }}
         />
-      </div>
+      </section>
     );
   },
 );

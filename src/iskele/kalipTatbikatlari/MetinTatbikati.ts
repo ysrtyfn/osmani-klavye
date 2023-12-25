@@ -31,7 +31,8 @@ export class MetinTatbikati implements MetinMukavelesi {
 
     if (öncekiHarf === "ا" && harfiOsmani === "ا") {
       this.metin = this.metin.slice(0, -1);
-      harfiOsmani = "آ";
+      // harfiOsmani = "آ";
+      harfiOsmani = "\u0622";
     }
     // else if (harfiOsmani !== "" && harfiOsmani !== "-") {
     //   console.log("Bu harfi eklenmeli: " + harf);
@@ -51,7 +52,8 @@ export class MetinTatbikati implements MetinMukavelesi {
 
     if (öncekiHarf === "ا" && harfiOsmani === "ا") {
       metinİlkKısım = metinİlkKısım.slice(0, -1);
-      harfiOsmani = "آ";
+      // harfiOsmani = "آ";
+      harfiOsmani = "\u0622";
       karetHareketMiktarı = 0;
     }
 
@@ -69,7 +71,8 @@ export class MetinTatbikati implements MetinMukavelesi {
 
     if (öncekiHarf === "ا" && harfiOsmani === "ا") {
       metinİlkKısım = metinİlkKısım.slice(0, -1);
-      harfiOsmani = "آ";
+      // harfiOsmani = "آ";
+      harfiOsmani = "\u0622";
       karetHareketMiktarı = 0;
     }
 

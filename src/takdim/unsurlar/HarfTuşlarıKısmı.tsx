@@ -4,28 +4,30 @@ import HarfTuşlarıKısmıHususiyetleri from "./HarfTuşlarıKısmıHususiyetle
 
 const HarfTuşlarıKısmı = ({ tuşTıklanınca }: HarfTuşlarıKısmıHususiyetleri) => {
   return (
-    <>
-      <section className="flex select-none flex-row-reverse flex-wrap justify-center gap-2 ">
+    <section className="flex flex-col gap-1">
+      <div className="flex select-none flex-row-reverse flex-wrap justify-center gap-1">
         {harfler.map((harf, ibre) => {
-          return <HarfTuşu harf={harf} tıklanınca={tuşTıklanınca} key={"harf-tuşu-" + ibre} />;
+          return <HarfTuşu harf={harf} tıklanınca={tuşTıklanınca} className="w-10 p-2" key={"harf-tuşu-" + ibre} />;
         })}
-      </section>
-      <section className="flex select-none flex-row-reverse flex-wrap justify-center gap-2 ">
+      </div>
+      <div className="flex select-none flex-row-reverse flex-wrap justify-center gap-1">
         {rakamlar.map((rakam, ibre) => {
-          return <HarfTuşu harf={rakam} tıklanınca={tuşTıklanınca} key={"rakam-tuşu-" + ibre} />;
+          return <HarfTuşu harf={rakam} tıklanınca={tuşTıklanınca} className="w-10 p-2" key={"rakam-tuşu-" + ibre} />;
         })}
-      </section>
-      <section className="flex select-none flex-row-reverse flex-wrap justify-center gap-2 ">
+      </div>
+      <div className="flex select-none flex-row-reverse flex-wrap justify-center gap-1">
         {noktalama.map((noktalama, ibre) => {
-          return <HarfTuşu harf={noktalama} tıklanınca={tuşTıklanınca} key={"noktalama-tuşu-" + ibre} />;
+          return (
+            <HarfTuşu harf={noktalama} tıklanınca={tuşTıklanınca} className="w-10 p-2" key={"noktalama-tuşu-" + ibre} />
+          );
         })}
-      </section>
-      <section className="flex select-none flex-row-reverse flex-wrap justify-center gap-2 ">
+      </div>
+      <div className="flex select-none flex-row-reverse flex-wrap justify-center gap-1">
         {işaretler.map((işaret, ibre) => {
-          return <HarfTuşu harf={işaret} tıklanınca={tuşTıklanınca} key={"işaret-tuşu-" + ibre} />;
+          return <HarfTuşu harf={işaret} tıklanınca={tuşTıklanınca} className="w-10 p-4" key={"işaret-tuşu-" + ibre} />;
         })}
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 

@@ -69,7 +69,8 @@ export function latinidenOsmaniye(
       if (shiftBasiliMi) {
         return "ع";
       } else if (altBasiliMi) {
-        return "أ";
+        // return "أ";
+        return "\u0623";
       }
       return "ا";
 
