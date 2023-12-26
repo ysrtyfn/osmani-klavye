@@ -60,6 +60,7 @@ export function MerkeziSahneMuavini(metinMukavelesi: MetinMukavelesi): MerkeziSa
     hadise.preventDefault(); // metinSahasının onChange metoduna mani oluyor. Tekrar çizme olmadığı için karet mevkisi değişmiyor.
 
     var tuşİsmi = hadise.key;
+    console.log("🚀 ~ file: MerkeziSahneMuavini.ts:63 ~ MerkeziSahneMuavini ~ tuşİsmi:", tuşİsmi);
     // var code = hadise.code;
 
     let mevcutMetin = metinMukavelesi.alMetni();
@@ -75,6 +76,10 @@ export function MerkeziSahneMuavini(metinMukavelesi: MetinMukavelesi): MerkeziSa
       return [mevcutMetin, -1];
     } else if (tuşİsmi === "ArrowLeft") {
       return [mevcutMetin, 1];
+    } else if (tuşİsmi === "ArrowUp") {
+      return [mevcutMetin, -10];
+    } else if (tuşİsmi === "ArrowDown") {
+      return [mevcutMetin, 10];
     } else if (hadise.ctrlKey && tuşİsmi.toLowerCase() === "v") {
       const ilaveMetin = await navigator.clipboard.readText();
 

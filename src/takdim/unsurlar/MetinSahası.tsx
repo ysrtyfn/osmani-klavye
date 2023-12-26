@@ -19,7 +19,6 @@ const MetinSahası = forwardRef(
         const seçiliKısımSonu = metinSahası.selectionEnd;
 
         const [harfEklenmişMetin, karetHareketMiktarı] = await tuşaBasılınca(hadise, seçiliKısımBaşı, seçiliKısımSonu);
-        console.log("🚀 ~ file: MetinSahası.tsx:21 ~ useEffect ~ karetHareketMiktarı:", karetHareketMiktarı);
 
         // CTRL tuşuna başılınca harf eklenmiyor ama seçili kısım kaybediliyor, buna mani olmak için
         if (karetHareketMiktarı === 0) {
