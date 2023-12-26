@@ -19,6 +19,24 @@ export function MerkeziSahneMuavini(metinMukavelesi: MetinMukavelesi): MerkeziSa
     return [harfEklenmişMetin, karetHareketMiktarı];
   };
 
+  const metneMetinEkle = (eklenecekMetin: Metin, seçiliKısımBaşı: number, seçiliKısımSonu: number): [Metin, number] => {
+    let metinEklenmişMetin = metinMukavelesi.alMetni();
+    let karetHareketMiktarı = eklenecekMetin.length;
+    if (metinMukavelesi.alMetni().length === 0) {
+      [metinEklenmişMetin, karetHareketMiktarı] = metinMukavelesi.ekleMetin(eklenecekMetin);
+      karetHareketMiktarı = metinEklenmişMetin.length;
+    } else if (seçiliKısımBaşı !== seçiliKısımSonu) {
+      [metinEklenmişMetin, karetHareketMiktarı] = metinMukavelesi.ekleMetniAraya(
+        eklenecekMetin,
+        seçiliKısımBaşı,
+        seçiliKısımSonu,
+      );
+    } else {
+      [metinEklenmişMetin, karetHareketMiktarı] = metinMukavelesi.ekleMetniMevkiye(eklenecekMetin, seçiliKısımBaşı);
+    }
+    return [metinEklenmişMetin, karetHareketMiktarı];
+  };
+
   const metniSil = (): Metin => {
     const silinmişMetin = metinMukavelesi.silMetni();
     return silinmişMetin;
@@ -34,7 +52,11 @@ export function MerkeziSahneMuavini(metinMukavelesi: MetinMukavelesi): MerkeziSa
     return tertipliMetin;
   };
 
-  const tuşaBasılınca = (hadise: KeyboardEvent, seçiliKısımBaşı: number, seçiliKısımSonu: number): [Metin, number] => {
+  const tuşaBasılınca = async (
+    hadise: KeyboardEvent,
+    seçiliKısımBaşı: number,
+    seçiliKısımSonu: number,
+  ): Promise<[Metin, number]> => {
     hadise.preventDefault(); // metinSahasının onChange metoduna mani oluyor. Tekrar çizme olmadığı için karet mevkisi değişmiyor.
 
     var tuşİsmi = hadise.key;
@@ -53,6 +75,11 @@ export function MerkeziSahneMuavini(metinMukavelesi: MetinMukavelesi): MerkeziSa
       return [mevcutMetin, -1];
     } else if (tuşİsmi === "ArrowLeft") {
       return [mevcutMetin, 1];
+    } else if (hadise.ctrlKey && tuşİsmi.toLowerCase() === "v") {
+      const ilaveMetin = await navigator.clipboard.readText();
+
+      // TODO metni araya ilave edemiyoruz, CTRL tıklanınca seçili kısım kaybediliyor
+      return metneMetinEkle(ilaveMetin, seçiliKısımBaşı, seçiliKısımSonu);
     } else {
       const öncekiHarf = metinMukavelesi.alSondakiHarfi();
       const harfOsmani = latinidenOsmaniye(tuşİsmi, öncekiHarf, hadise.ctrlKey, hadise.shiftKey, hadise.altKey);

@@ -80,6 +80,27 @@ export class MetinTatbikati implements MetinMukavelesi {
     return [this.metin, karetHareketMiktarı];
   }
 
+  ekleMetin(eklenecekMetin: Metin): [Metin, number] {
+    this.metin += eklenecekMetin;
+    return [this.metin, this.metin.length];
+  }
+
+  ekleMetniMevkiye(eklenecekMetin: Metin, mevkiBaşı: number): [Metin, number] {
+    let metinİlkKısım = this.metin.slice(0, mevkiBaşı);
+    const metinSonKısım = this.metin.slice(mevkiBaşı);
+
+    this.metin = [metinİlkKısım, eklenecekMetin, metinSonKısım].join("");
+    return [this.metin, eklenecekMetin.length];
+  }
+
+  ekleMetniAraya(eklenecekMetin: Metin, mevkiBaşı: number, mevkiSonu: number): [Metin, number] {
+    let metinİlkKısım = this.metin.slice(0, mevkiBaşı);
+    const metinSonKısım = this.metin.slice(mevkiSonu);
+
+    this.metin = [metinİlkKısım, eklenecekMetin, metinSonKısım].join("");
+    return [this.metin, eklenecekMetin.length];
+  }
+
   silHarf(): Metin {
     if (this.metin.endsWith("\u200C")) {
       this.metin = this.metin.slice(0, -2);

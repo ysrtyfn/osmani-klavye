@@ -6,6 +6,10 @@ export interface MetinMukavelesi {
   ekleHarfiMevkiye(harf: Harf, mevkiBaşı: number): [Metin, number];
   ekleHarfiAraya(harf: Harf, mevkiBaşı: number, mevkiSonu: number): [Metin, number];
 
+  ekleMetin(eklenecekMetin: Metin): [Metin, number];
+  ekleMetniMevkiye(eklenecekMetin: Metin, mevkiBaşı: number): [Metin, number];
+  ekleMetniAraya(eklenecekMetin: Metin, mevkiBaşı: number, mevkiSonu: number): [Metin, number];
+
   alMetni(): Metin;
   alSondakiHarfi(): string;
 

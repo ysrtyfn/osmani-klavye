@@ -1,6 +1,7 @@
 import { ForwardedRef, RefObject, forwardRef, useEffect, useId, useRef, useState } from "react";
 import MetinSahasıHususiyetleri from "./MetinSahasıHususiyetleri";
 import { cn } from "@/nuve/aletler";
+import KaretNevi, { alKaretİlkHalini } from "@/merkez/nevler/KaretNevi";
 
 const MetinSahası = forwardRef(
   (
@@ -8,18 +9,31 @@ const MetinSahası = forwardRef(
     metinSahasıİması: ForwardedRef<HTMLTextAreaElement>,
   ) => {
     const [karetİbresi, değiştirKaretİbresini] = useState<number>(0); // mevki değişmediğinde metnin sonuna gidiyor, yeniden çizmeli
-    const karetMevkisiİması = useRef<number>(0);
+    const karetMevkisiİması = useRef<KaretNevi>(alKaretİlkHalini());
     const id_osmaniMetinSahası = useId();
 
     useEffect(() => {
-      let tuşaBasılıncaÜst = (hadise: KeyboardEvent) => {
+      let tuşaBasılıncaÜst = async (hadise: KeyboardEvent) => {
         const metinSahası: HTMLTextAreaElement = hadise.target as HTMLTextAreaElement;
         const seçiliKısımBaşı = metinSahası.selectionStart;
         const seçiliKısımSonu = metinSahası.selectionEnd;
 
-        const [harfEklenmişMetin, karetHareketMiktarı] = tuşaBasılınca(hadise, seçiliKısımBaşı, seçiliKısımSonu);
+        const [harfEklenmişMetin, karetHareketMiktarı] = await tuşaBasılınca(hadise, seçiliKısımBaşı, seçiliKısımSonu);
         console.log("🚀 ~ file: MetinSahası.tsx:21 ~ useEffect ~ karetHareketMiktarı:", karetHareketMiktarı);
-        karetMevkisiİması.current = seçiliKısımBaşı + karetHareketMiktarı;
+
+        // CTRL tuşuna başılınca harf eklenmiyor ama seçili kısım kaybediliyor, buna mani olmak için
+        if (karetHareketMiktarı === 0) {
+          karetMevkisiİması.current = {
+            başMevki: seçiliKısımBaşı,
+            sonMevki: seçiliKısımSonu,
+          };
+        } else {
+          karetMevkisiİması.current = {
+            başMevki: seçiliKısımBaşı + karetHareketMiktarı,
+            sonMevki: seçiliKısımBaşı + karetHareketMiktarı,
+          };
+        }
+
         değiştirKaretİbresini((ibre) => ibre + 1);
         metniDeğiştir(harfEklenmişMetin);
       };
@@ -39,10 +53,10 @@ const MetinSahası = forwardRef(
       const metinSahası: HTMLTextAreaElement = document.getElementById(id_osmaniMetinSahası) as HTMLTextAreaElement;
 
       if (karetMevkisi >= 0) {
-        karetMevkisiİması.current = karetMevkisi;
+        karetMevkisiİması.current = { başMevki: karetMevkisi, sonMevki: karetMevkisi };
       }
       metinSahası.focus();
-      metinSahası.setSelectionRange(karetMevkisiİması.current, karetMevkisiİması.current);
+      metinSahası.setSelectionRange(karetMevkisiİması.current.başMevki, karetMevkisiİması.current.sonMevki);
     }, [id_osmaniMetinSahası, metin, karetİbresi, karetMevkisi]);
 
     return (

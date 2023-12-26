@@ -37,6 +37,5 @@ next-env.d.ts
 
 # lazım değil
 /src/nuve/fontlar
-/src/merkez/nevler
 /src/merkez/klavyeİdaresi.ts
 /teşhir
