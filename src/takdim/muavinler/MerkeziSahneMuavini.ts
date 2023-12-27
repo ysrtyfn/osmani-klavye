@@ -60,14 +60,12 @@ export function MerkeziSahneMuavini(metinMukavelesi: MetinMukavelesi): MerkeziSa
     hadise.preventDefault(); // metinSahasının onChange metoduna mani oluyor. Tekrar çizme olmadığı için karet mevkisi değişmiyor.
 
     var tuşİsmi = hadise.key;
-    console.log("🚀 ~ file: MerkeziSahneMuavini.ts:63 ~ MerkeziSahneMuavini ~ tuşİsmi:", tuşİsmi);
+    // console.log("🚀 ~ file: MerkeziSahneMuavini.ts:63 ~ MerkeziSahneMuavini ~ tuşİsmi:", tuşİsmi);
     // var code = hadise.code;
 
     let mevcutMetin = metinMukavelesi.alMetni();
-    let karetHareketMiktarı = 0;
     if (tuşİsmi === "Backspace") {
-      const harfSilinmişMetin = metinMukavelesi.silHarfiMevkiden(seçiliKısımBaşı, seçiliKısımSonu);
-      return [harfSilinmişMetin, -1];
+      return metinMukavelesi.silHarfiMevkiden(seçiliKısımBaşı, seçiliKısımSonu);
     } else if (tuşİsmi === "Delete") {
       const harfAdedi = mevcutMetin.length;
       const silinmişMetin = metniSil();

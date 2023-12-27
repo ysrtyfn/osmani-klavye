@@ -13,8 +13,8 @@ export interface MetinMukavelesi {
   alMetni(): Metin;
   alSondakiHarfi(): string;
 
-  silHarf(): Metin;
-  silHarfiMevkiden(mevkiBaşı: number, mevkiSonu: number): Metin;
+  silHarf(): [Metin, number];
+  silHarfiMevkiden(mevkiBaşı: number, mevkiSonu: number): [Metin, number];
 
   silMetni(): Metin;
   değiştirMetni(yeniMetin: string): Metin;

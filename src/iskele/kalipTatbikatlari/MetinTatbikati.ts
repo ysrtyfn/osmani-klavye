@@ -101,24 +101,33 @@ export class MetinTatbikati implements MetinMukavelesi {
     return [this.metin, eklenecekMetin.length];
   }
 
-  silHarf(): Metin {
+  silHarf(): [Metin, number] {
+    let karetHareketMiktarı = 0;
     if (this.metin.endsWith("\u200C")) {
-      this.metin = this.metin.slice(0, -2);
+      karetHareketMiktarı = -2;
+      this.metin = this.metin.slice(0, karetHareketMiktarı);
     } else {
-      this.metin = this.metin.slice(0, -1);
+      karetHareketMiktarı = -1;
+      this.metin = this.metin.slice(0, karetHareketMiktarı);
     }
-    return this.metin;
+    return [this.metin, karetHareketMiktarı];
   }
 
-  silHarfiMevkiden(mevkiBaşı: number, mevkiSonu: number): Metin {
+  silHarfiMevkiden(mevkiBaşı: number, mevkiSonu: number): [Metin, number] {
+    let karetHareketMiktarı = 0;
     if (mevkiBaşı === mevkiSonu) {
-      mevkiBaşı = mevkiBaşı - 1;
+      if (this.metin.endsWith("\u200C")) {
+        karetHareketMiktarı = -2;
+      } else {
+        karetHareketMiktarı = -1;
+      }
+      mevkiBaşı = mevkiBaşı + karetHareketMiktarı;
     }
     let metinİlkKısım = this.metin.slice(0, mevkiBaşı);
     const metinSonKısım = this.metin.slice(mevkiSonu);
 
     this.metin = [metinİlkKısım, metinSonKısım].join("");
-    return this.metin;
+    return [this.metin, karetHareketMiktarı];
   }
 
   silMetni(): Metin {
