@@ -30,4 +30,5 @@ Elifba'yı talim etmek için:
 
 ## Kestirmeler
 
-İlave edilecek...
+Klavye ile yazarken kullanabileceğiniz kestirmeler:
+[Kestirmeler](https://kadimelifba.com/aletler/osmaniKlavye/)
