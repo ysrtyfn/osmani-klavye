@@ -32,3 +32,12 @@ Elifba'yı talim etmek için:
 
 Klavye ile yazarken kullanabileceğiniz kestirmeler:
 [Kestirmeler](https://kadimelifba.com/aletler/osmaniKlavye/)
+
+## Metin Sahası Membası
+
+Buradaki metin sahasını memba haline getirip NPM üzerinden neşrettik.
+```
+npm i osmani-klavye
+```
+
+
